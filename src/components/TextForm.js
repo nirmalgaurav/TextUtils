@@ -19,9 +19,8 @@ export default function TextForm(props) {
     }
 
     const handleUpClickCopy=()=>{
-        let newText = document.getElementById("myBox");
-        newText.select();
-        navigator.clipboard.writeText(newText.value);
+        navigator.clipboard.writeText(text);
+        document.getSelection().removeAllRanges();
     }
 
     const handleUpClickExtraSpace=()=>{
@@ -43,18 +42,18 @@ export default function TextForm(props) {
         <div className="mb-3 ">
             <textarea className="form-control" value={text} onChange={handleOnChange} id="myBox" rows="8" style={{backgroundColor : props.mode === 'light' ? 'white' : '#343536' , color : props.mode === 'light'? 'black' : 'white'}}></textarea>
         </div> 
-            <button className="btn btn-primary  m-1" onClick={handleUPClickUpper}>Convert To UpperCase</button>
-            <button className="btn btn-primary  m-1" onClick={handleUPClickLower}> Convert To LowerCase </button>
-            <button className="btn btn-primary  m-1" onClick={handleUpClickClear}> Clear Text </button>
-            <button className="btn btn-primary  m-1" onClick={handleUpClickCopy}> Copy Text </button>
-            <button className="btn btn-primary  m-1" onClick={handleUpClickExtraSpace}> Delete Extra Space </button>
+            <button disabled={text.length === 0} className="btn btn-primary  m-1" onClick={handleUPClickUpper}>Convert To UpperCase</button>
+            <button disabled={text.length === 0} className="btn btn-primary  m-1" onClick={handleUPClickLower}> Convert To LowerCase </button>
+            <button disabled={text.length === 0} className="btn btn-primary  m-1" onClick={handleUpClickClear}> Clear Text </button>
+            <button disabled={text.length === 0} className="btn btn-primary  m-1" onClick={handleUpClickCopy}> Copy Text </button>
+            <button disabled={text.length === 0} className="btn btn-primary  m-1" onClick={handleUpClickExtraSpace}> Delete Extra Space </button>
     </div>  
     <div className="container my-3" style={{backgroundColor : props.mode === 'light' ? 'white' : '#343536',color : props.mode === 'light' ? 'black':'white'}}>
         <h2>Your Text Summary </h2>
-        <p> {text.split(" ").length} Words and {text.length} Characters </p>
-        <p> {0.008*text.split(" ").length} Minutes read </p>
+        <p> {text.split(/\s+/).filter( (element) => {return element.length!==0}).length} Words and {text.length} Characters </p>
+        <p> {0.008*text.split(" ").filter( (element) => {return element.length!==0}).length} Minutes read </p>
         <h2>Preview</h2>
-        <p>{text}</p>
+        <p>{text.length >0 ? text : "Nothing to preview."}</p>
     </div>
     
      
